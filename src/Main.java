@@ -27,4 +27,7 @@ import static org.lwjgl.util.glu.GLU.*;
 
 public class Main {
     
+    public static void main(String args[]) {
+        System.out.println("hi");
+    }
 }

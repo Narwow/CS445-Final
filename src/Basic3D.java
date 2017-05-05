@@ -1,10 +1,10 @@
 /*******************************************************
-* file: Main.java
+* file: Basic3D.java
 * authors: Alex Kimea, Jhuo Wei Ku, Andy Liang
 * class: CS 445 - Computer Graphics
 *
 * assignment: Final Program
-* date last modified:
+* date last modified: 5/5/2017
 *
 * purpose: This program uses the LWJGL library to draw a window of 640x480
 * in the center of the screen. The program will create an original scene in 
@@ -27,14 +27,26 @@ import org.lwjgl.util.glu.GLU;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
+/**
+ * The main class, initializes program parts such as
+ * FPCamera, the window on user's screen, and starts the game.
+ * @author 
+ */
 public class Basic3D {
     private FPCameraController fp;
     private DisplayMode displayMode;
     
+    /**
+     * Constructor. Instantiates the FPCamera.
+     */
     public Basic3D() {
         fp = new FPCameraController(0f, 0f, 0f);
     }
     
+    /**
+     * Calls methods to create window on screen, initializes
+     * GL, and begins the game.
+     */
     public void start() {
         try {
             createWindow();
@@ -45,6 +57,10 @@ public class Basic3D {
         }
     }
     
+    /**
+     * Creates a nonfullscreen window of 640x480 with attributes.
+     * @throws Exception 
+     */
     private void createWindow() throws Exception {
         Display.setFullscreen(false);
         DisplayMode d[] = Display.getAvailableDisplayModes();
@@ -60,16 +76,23 @@ public class Basic3D {
         Display.create();
     }
     
+    /**
+     * Initializes GL attributes and matrices.
+     */
     private void initGL() {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        GLU.gluPerspective(100.0f, (float)displayMode.getWidth()/(float)
+        GLU.gluPerspective(100.0f, (float)displayMode.getWidth() / (float)
         displayMode.getHeight(), 0.1f, 300.0f);
         glMatrixMode(GL_MODELVIEW);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     }
     
+    /**
+     * Main method, creates Basic3D object to start the program.
+     * @param args 
+     */
     public static void main(String args[]) {
         System.out.println("hi");
         

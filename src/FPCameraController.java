@@ -6,6 +6,10 @@ import org.lwjgl.Sys;
 
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * This class is used to control the First Person Camera.
+ * @author tofum
+ */
 public class FPCameraController {
     private Vector3Float position;
     private Vector3Float lPosition;
@@ -14,6 +18,13 @@ public class FPCameraController {
     private float yaw;
     private float pitch;
     
+    /**
+     * Takes in x, y, z coordinates and creates new camera positions 
+     * as well as settings the yaw and pitch of camera.
+     * @param x
+     * @param y
+     * @param z 
+     */
     public FPCameraController(float x, float y, float z) {
         position = new Vector3Float(x, y, z);
         
@@ -25,15 +36,27 @@ public class FPCameraController {
         yaw = 0.0f;
         pitch = 0.0f;
     }
-    
+    /**
+     * Allows user to use mouse to move camera around horizontally
+     * @param amount 
+     */
     public void yaw(float amount) {
         yaw += amount;
     }
     
+    /**
+     * Allows user to use mouse to move camera vertically.
+     * @param amount 
+     */
     public void pitch(float amount) {
         pitch -= amount;
     }
     
+    /**
+     * Allows user to camera forward. Input distance is default movement speed for move
+     * and strafe functions.
+     * @param distance 
+     */
     public void walkForward(float distance) {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw));
@@ -42,6 +65,10 @@ public class FPCameraController {
         position.setZ(position.getZ() + zOffset);
     }
     
+    /**
+     * Allows user to move camera backward. 
+     * @param distance 
+     */
     public void walkBackwards(float distance) {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw));
@@ -50,6 +77,10 @@ public class FPCameraController {
         position.setZ(position.getZ() - zOffset);
     }
     
+    /**
+     * Allows user to move camera to the leftward.
+     * @param distance 
+     */
     public void strafeLeft(float distance) {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw-90));
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw-90));
@@ -58,6 +89,10 @@ public class FPCameraController {
         position.setZ(position.getZ() + zOffset);
     }
     
+    /**
+     * Allows user to move camera rightward.
+     * @param distance 
+     */
     public void strafeRight(float distance) {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw+90));
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw+90));
@@ -66,28 +101,37 @@ public class FPCameraController {
         position.setZ(position.getZ() + zOffset);
     }
     
+    /**
+     * Allows user to move camera upwards.
+     * @param distance 
+     */
     public void moveUp(float distance) {
         position.setY(position.getY() - distance);
     }
     
+    /**
+     * Allows user to move camera downwards.
+     * @param distance 
+     */
     public void moveDown(float distance) {
         position.setY(position.getY() + distance);
     }
     
+    /**
+     * Translates and rotates matrix so that it looks through the camera.
+     */
     public void lookThrough() {
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
         glRotatef(yaw, 0.0f, 1.0f, 0.0f);
         glTranslatef(position.getX(), position.getY(), position.getZ());
     }
     
-    public void setYaw(float amount) {
-        this.yaw = amount;
-    }
-    
-    public void setPitch(float amount) {
-        this.pitch = amount;
-    }
-    
+    /**
+     * Main loop of the program, calls all movement and camera movement functions.
+     * Sets and controls values such as distance of movement, mouse sensitivity, and movement speed.
+     * Locks mouse into window and removes cursor. Calls render() to render objects. Loop will close
+     * and program will close when user clicks Close or the X on window, or if user presses ESC.
+     */
     public void gameLoop() {
         FPCameraController camera = new FPCameraController(0, 0, 0);
         

@@ -184,7 +184,9 @@ public class FPCameraController {
             glEnable(GL_DEPTH_TEST); //had to use this. If not enabled cube shows other side's colors and looks weird.
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-            render();
+            //render();
+            Chunks chunks = new Chunks(0, 0, 0);
+            chunks.render();
           
             Display.update();
             Display.sync(60);

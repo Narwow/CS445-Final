@@ -14,6 +14,7 @@ public class FPCameraController {
     private Vector3Float position;
     private Vector3Float lPosition;
     private Vector3Float me;
+    private Chunks chunks;
     
     private float yaw;
     private float pitch;
@@ -32,7 +33,7 @@ public class FPCameraController {
         lPosition.setX(0f);
         lPosition.setY(15f);
         lPosition.setZ(0f);
-        
+        chunks = new Chunks((int)x,(int)y, (int)z);
         yaw = 0.0f;
         pitch = 0.0f;
     }
@@ -184,7 +185,7 @@ public class FPCameraController {
             glEnable(GL_DEPTH_TEST); //had to use this. If not enabled cube shows other side's colors and looks weird.
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-            render();
+            chunks.render();
           
             Display.update();
             Display.sync(60);

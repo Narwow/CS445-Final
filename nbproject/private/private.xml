@@ -3,9 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Gitworkspace/CS445-Final/src/Block.java</file>
-            <file>file:/C:/Gitworkspace/CS445-Final/src/Chunk.java</file>
-            <file>file:/C:/Gitworkspace/CS445-Final/src/Basic3D.java</file>
+            <file>file:/Users/andyliang/Desktop/CS445-Final/src/Chunk.java</file>
+            <file>file:/Users/andyliang/Desktop/CS445-Final/src/Block.java</file>
+            <file>file:/Users/andyliang/Desktop/CS445-Final/src/SimplexNoise.java</file>
+            <file>file:/Users/andyliang/Desktop/CS445-Final/src/Basic3D.java</file>
+            <file>file:/Users/andyliang/Desktop/CS445-Final/src/Vector3Float.java</file>
+            <file>file:/Users/andyliang/Desktop/CS445-Final/src/SimplexNoise_octave.java</file>
+            <file>file:/Users/andyliang/Desktop/CS445-Final/src/FPCameraController.java</file>
         </group>
     </open-files>
 </project-private>

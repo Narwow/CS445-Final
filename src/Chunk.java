@@ -1,13 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Joe Ku
- */
+/*******************************************************
+/* file: Chunk.java
+* authors: Alex Kimea, Jhuo Wei Ku, Andy Liang
+* class: CS 445 - Computer Graphics
+*
+* assignment: Final Program
+* date last modified: May 17
+*
+* purpose: This class is to create a chunk of blocks with textures
+* and can be able to renders it
+*/
 import java.nio.FloatBuffer;
 import java.util.Random;
 import org.lwjgl.BufferUtils;
@@ -22,8 +23,8 @@ public class Chunk {
 
     static final int CHUNK_SIZE = 30;
     static final int CUBE_LENGTH = 2;
-    static final float persistanceMin = 0.18f;
-    static final float persistanceMax = 0.40f;
+    static final float persistanceMin = 0.05f;
+    static final float persistanceMax = 0.14f;
 
     private Block[][][] Blocks;
     private int VBOVertexHandle;
@@ -33,6 +34,8 @@ public class Chunk {
     private Random r;
     private Texture texture;
 
+    //Method: render
+    //Purpose: renders the chunks
     public void render() {
         glPushMatrix();
         glBindBuffer(GL_ARRAY_BUFFER, VBOVertexHandle);
@@ -47,7 +50,8 @@ public class Chunk {
         glPopMatrix();
     }
 
-    //Primary method for generating terrain with simplex noise and drawing the chunk
+    //Method: rebuildMest
+    //Purpose: Primary method for generating terrain with simplex noise and drawing the chunk
     public void rebuildMesh(float startX, float startY, float startZ) {
 
         Random random = new Random();
@@ -73,17 +77,19 @@ public class Chunk {
         for (float x = 0; x < CHUNK_SIZE; x++) {
             for (float z = 0; z < CHUNK_SIZE; z++) {
                 for (float y = 0; y < CHUNK_SIZE; y++) {
-
+                    
+                    
                     //generate height from simplex noise
-                    int height = (int) (startY + Math.abs((int) (CHUNK_SIZE * noise.getNoise((int) x, (int) z))));
+                    int height = (int) (startY + Math.abs((int) (CHUNK_SIZE * noise.getNoise((int) x, (int) z)))*CUBE_LENGTH);
                     if (y >= height) {
                         break;
                     }
-
                     VertexPositionData.put(createCube(
-                            (float) (startX + x * CUBE_LENGTH),
-                            (float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)),
-                            (float) (startZ + z * CUBE_LENGTH)));
+                            -(float) (startX + x * CUBE_LENGTH),
+                            (float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)-42),
+                            -(float) (startZ + z * CUBE_LENGTH)));
+                    //System.out.println("x: "+(float) (startX + x * CUBE_LENGTH));
+                    System.out.println("y: "+(float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)));
 
                     VertexColorData.put(createCubeVertexCol(getCubeColor(
                             Blocks[(int) x][(int) y][(int) z])));
@@ -107,6 +113,8 @@ public class Chunk {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
+    //Method: createCubeVertexCol
+    //Purpose: create and return a float array that stores the color
     private float[] createCubeVertexCol(float[] CubeColorArray) {
         float[] cubeColors = new float[CubeColorArray.length * 4 * 6];
         for (int i = 0; i < cubeColors.length; i++) {
@@ -116,6 +124,8 @@ public class Chunk {
         return cubeColors;
     }
 
+    //Method: createCube
+    //Purpuse: define the vertices of the cube and store and return in a float array
     public static float[] createCube(float x, float y, float z) {
         int offset = CUBE_LENGTH / 2;
         return new float[]{
@@ -151,11 +161,13 @@ public class Chunk {
             x + offset, y - offset, z};
     }
 
-    //Default cube color
+    //Method: getCubeColor
+    //Purpose: Default cube color
     private float[] getCubeColor(Block block) {
         return new float[]{1, 1, 1};
     }
 
+    //Constructor
     //Chunk constructor which assigns block types to all blocks and then calls rebuildMesh() to draw terrain
     public Chunk(int startX, int startY, int startZ) {
         try {
@@ -170,7 +182,6 @@ public class Chunk {
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-
                     float rand = r.nextFloat();
                     //boolean dog = true; this is for testing
                     if (rand>0.8f) {
@@ -199,7 +210,8 @@ public class Chunk {
         rebuildMesh(startX, startY, startZ);
     }
 
-    //Assigns textures from terrain.png to the sides of each cube
+    //Method: createTexCube
+    //Purpose: Assigns textures from terrain.png to the sides of each cube
     public static float[] createTexCube(float x, float y, Block block) {
 
         float offset = (1024f / 16) / 1024f;

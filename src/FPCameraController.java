@@ -45,6 +45,7 @@ public class FPCameraController {
         yaw = 0.0f;
         pitch = 0.0f;
         firstRender = true;
+        //chunkObject = new Chunk((int)x,(int)y,(int)z);
     }
     /**
      * Allows user to use mouse to move camera around horizontally
@@ -205,4 +206,5 @@ public class FPCameraController {
         }
         Display.destroy();
     }
+    
 }

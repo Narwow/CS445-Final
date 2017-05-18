@@ -1,13 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Joe Ku
- */
+/*******************************************************
+/* file: Block.java
+* authors: Alex Kimea, Jhuo Wei Ku, Andy Liang
+* class: CS 445 - Computer Graphics
+*
+* assignment: Final Program
+* date last modified: May 17
+*
+* purpose: This class can create a six different type of block and 
+* they holds an boolean value to determine whether it is active
+*/
 public class Block {
 
     private boolean IsActive;
@@ -37,29 +38,34 @@ public class Block {
         }
     }
 
-    //Constructor
+    //Method: Block
+    //Purpose: Constructor
     public Block(BlockType type) {
         Type = type;
     }
 
-    //Set coordinate position
+    //Method: setCoords
+    //Purpose: Set coordinate position
     public void setCoords(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    //Return true if active, false otherwise
+    //Method: IsActie
+    //Purpose: Return true if active, false otherwise
     public boolean IsActive() {
         return IsActive;
     }
 
-    //Set block status to active
+    //Method: SetActive
+    //Purpose: Set block status to active
     public void SetActive(boolean active) {
         IsActive = active;
     }
 
-    //Get ID
+    //Method: Get ID
+    //Purpose: return the id of the block
     public int GetID() {
         return Type.GetID();
     }

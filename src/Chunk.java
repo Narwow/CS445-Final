@@ -23,8 +23,8 @@ public class Chunk {
 
     static final int CHUNK_SIZE = 30;
     static final int CUBE_LENGTH = 2;
-    static final float persistanceMin = 0.05f;
-    static final float persistanceMax = 0.14f;
+    static final float persistanceMin = 0.07f;
+    static final float persistanceMax = 0.12f;
 
     private Block[][][] Blocks;
     private int VBOVertexHandle;
@@ -77,8 +77,6 @@ public class Chunk {
         for (float x = 0; x < CHUNK_SIZE; x++) {
             for (float z = 0; z < CHUNK_SIZE; z++) {
                 for (float y = 0; y < CHUNK_SIZE; y++) {
-                    
-                    
                     //generate height from simplex noise
                     int height = (int) (startY + Math.abs((int) (CHUNK_SIZE * noise.getNoise((int) x, (int) z)))*CUBE_LENGTH);
                     if (y >= height) {
@@ -89,7 +87,7 @@ public class Chunk {
                             (float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)-42),
                             -(float) (startZ + z * CUBE_LENGTH)));
                     //System.out.println("x: "+(float) (startX + x * CUBE_LENGTH));
-                    System.out.println("y: "+(float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)));
+                    //System.out.println("y: "+(float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)));
 
                     VertexColorData.put(createCubeVertexCol(getCubeColor(
                             Blocks[(int) x][(int) y][(int) z])));
@@ -183,19 +181,19 @@ public class Chunk {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
                     float rand = r.nextFloat();
-                    //boolean dog = true; this is for testing
-                    if (rand>0.8f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Grass);
-                    } else if (rand > 0.6f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Sand);
-                    } else if (rand > 0.4f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Dirt);
-                    } else if (rand > 0.3f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Water);
-                    } else if (rand > 0.1f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Stone);
-                    } else {
+                    boolean dog = true; //this is for testing
+                    if (y == 0) {
                         Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Bedrock);
+                    } else if (rand > 0.5f && (y == 1 || y == 2)) {
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Stone);
+                    } else if (rand <= 0.5f && (y == 1 || y == 2)) {
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Dirt);
+                    } else if (rand > 0.4f) {
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Grass);
+                    } else if (rand > 0.2f) {
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Sand);
+                    } else {
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Water);
                     }
                 }
             }

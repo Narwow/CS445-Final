@@ -35,7 +35,7 @@ public class FPCameraController {
      * @param z 
      */
     public FPCameraController(float x, float y, float z) {
-        position = new Vector3Float(x, y, z);
+        position = new Vector3Float(25.91f, -35.7f, 28.53f);
         
         lPosition = new Vector3Float(x, y, z);
         lPosition.setX(0f);
@@ -43,7 +43,7 @@ public class FPCameraController {
         lPosition.setZ(0f);
         
         yaw = 0.0f;
-        pitch = 0.0f;
+        pitch = 80.0f;
         firstRender = true;
         //chunkObject = new Chunk((int)x,(int)y,(int)z);
     }
@@ -196,7 +196,7 @@ public class FPCameraController {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
             if(firstRender) {
-                chunkObject = new Chunk(0,2,0);
+                chunkObject = new Chunk(0,4,0);
                 firstRender = false;
             }  
             chunkObject.render();

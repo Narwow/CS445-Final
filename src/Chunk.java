@@ -73,21 +73,32 @@ public class Chunk {
                 (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
         FloatBuffer VertexTextureData = BufferUtils.createFloatBuffer(
                 (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
-
+        
         for (float x = 0; x < CHUNK_SIZE; x++) {
             for (float z = 0; z < CHUNK_SIZE; z++) {
                 for (float y = 0; y < CHUNK_SIZE; y++) {
                     //generate height from simplex noise
                     int height = (int) (startY + Math.abs((int) (CHUNK_SIZE * noise.getNoise((int) x, (int) z)))*CUBE_LENGTH);
+                    
                     if (y >= height) {
                         break;
+                    }
+                    //Generate Grass at the top layer
+                    if(y == height -1){
+                        Blocks[(int)x][(int)y][(int)z] = new Block(Block.BlockType.BlockType_Grass);
+                    }
+                    //Generate water in the right of the lighting source of the area
+                    if( x>=0 && x<=15 && z >= 20 && y == 3){
+                        Blocks[(int)x][(int)y][(int)z] = new Block(Block.BlockType.BlockType_Water);
+                    }
+                    //Generate sand in the left size of the lighting source of the area
+                    else if(x>15 && x<=30 && z >= 20 && y == 3){
+                        Blocks[(int)x][(int)y][(int)z] = new Block(Block.BlockType.BlockType_Sand);
                     }
                     VertexPositionData.put(createCube(
                             -(float) (startX + x * CUBE_LENGTH),
                             (float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)-42),
                             -(float) (startZ + z * CUBE_LENGTH)));
-                    //System.out.println("x: "+(float) (startX + x * CUBE_LENGTH));
-                    //System.out.println("y: "+(float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)));
 
                     VertexColorData.put(createCubeVertexCol(getCubeColor(
                             Blocks[(int) x][(int) y][(int) z])));
@@ -190,11 +201,9 @@ public class Chunk {
                         Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Dirt);
                     } else if (rand > 0.4f) {
                         Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Grass);
-                    } else if (rand > 0.2f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Sand);
                     } else {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Water);
-                    }
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Sand);
+                    } 
                 }
             }
         }

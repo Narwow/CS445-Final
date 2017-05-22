@@ -55,7 +55,15 @@ public class Chunk {
     public void rebuildMesh(float startX, float startY, float startZ) {
 
         Random random = new Random();
-
+        int sandXmin = r.nextInt(15);
+        int sandXmax = r.nextInt(15)+15;
+        int sandZmin = r.nextInt(15);
+        int sandZmax = r.nextInt(15)+15;
+        
+        int waterXmin = r.nextInt(15);
+        int waterXmax = r.nextInt(15)+15;
+        int waterZmin = r.nextInt(15);
+        int waterZmax = r.nextInt(15)+15;
         float persistance = 0;
         while (persistance < persistanceMin) {
             persistance = (persistanceMax) * random.nextFloat();
@@ -87,12 +95,12 @@ public class Chunk {
                     if(y == height -1){
                         Blocks[(int)x][(int)y][(int)z] = new Block(Block.BlockType.BlockType_Grass);
                     }
-                    //Generate water in the right of the lighting source of the area
-                    if( x>=0 && x<=15 && z >= 20 && y == 3){
+                    //Generate random water area
+                    if( x>=waterXmin && x<=waterXmax && z >= waterZmin && z <= waterZmax && y == 3){
                         Blocks[(int)x][(int)y][(int)z] = new Block(Block.BlockType.BlockType_Water);
                     }
-                    //Generate sand in the left size of the lighting source of the area
-                    else if(x>15 && x<=30 && z >= 20 && y == 3){
+                    //Generate random sand area
+                    else if( x>=sandXmin && x<=sandXmax && z >= sandZmin && z <= sandZmax && y == 3){
                         Blocks[(int)x][(int)y][(int)z] = new Block(Block.BlockType.BlockType_Sand);
                     }
                     VertexPositionData.put(createCube(
@@ -417,4 +425,6 @@ public class Chunk {
                     x + offset * 1, y + offset * 2};
         }
     }
+    
+
 }

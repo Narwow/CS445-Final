@@ -23,8 +23,8 @@ public class Chunk {
 
     static final int CHUNK_SIZE = 30;
     static final int CUBE_LENGTH = 2;
-    static final float persistanceMin = 0.05f;
-    static final float persistanceMax = 0.14f;
+    static final float persistanceMin = 0.07f;
+    static final float persistanceMax = 0.12f;
 
     private Block[][][] Blocks;
     private int VBOVertexHandle;
@@ -55,7 +55,15 @@ public class Chunk {
     public void rebuildMesh(float startX, float startY, float startZ) {
 
         Random random = new Random();
-
+        int sandXmin = r.nextInt(15);
+        int sandXmax = r.nextInt(15)+15;
+        int sandZmin = r.nextInt(15);
+        int sandZmax = r.nextInt(15)+15;
+        
+        int waterXmin = r.nextInt(15);
+        int waterXmax = r.nextInt(15)+15;
+        int waterZmin = r.nextInt(15);
+        int waterZmax = r.nextInt(15)+15;
         float persistance = 0;
         while (persistance < persistanceMin) {
             persistance = (persistanceMax) * random.nextFloat();
@@ -73,23 +81,32 @@ public class Chunk {
                 (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
         FloatBuffer VertexTextureData = BufferUtils.createFloatBuffer(
                 (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
-
+        
         for (float x = 0; x < CHUNK_SIZE; x++) {
             for (float z = 0; z < CHUNK_SIZE; z++) {
                 for (float y = 0; y < CHUNK_SIZE; y++) {
-                    
-                    
                     //generate height from simplex noise
                     int height = (int) (startY + Math.abs((int) (CHUNK_SIZE * noise.getNoise((int) x, (int) z)))*CUBE_LENGTH);
+                    
                     if (y >= height) {
                         break;
+                    }
+                    //Generate Grass at the top layer
+                    if(y == height -1){
+                        Blocks[(int)x][(int)y][(int)z] = new Block(Block.BlockType.BlockType_Grass);
+                    }
+                    //Generate random water area
+                    if( x>=waterXmin && x<=waterXmax && z >= waterZmin && z <= waterZmax && y == 3){
+                        Blocks[(int)x][(int)y][(int)z] = new Block(Block.BlockType.BlockType_Water);
+                    }
+                    //Generate random sand area
+                    else if( x>=sandXmin && x<=sandXmax && z >= sandZmin && z <= sandZmax && y == 3){
+                        Blocks[(int)x][(int)y][(int)z] = new Block(Block.BlockType.BlockType_Sand);
                     }
                     VertexPositionData.put(createCube(
                             -(float) (startX + x * CUBE_LENGTH),
                             (float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)-42),
                             -(float) (startZ + z * CUBE_LENGTH)));
-                    //System.out.println("x: "+(float) (startX + x * CUBE_LENGTH));
-                    System.out.println("y: "+(float) (y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8)));
 
                     VertexColorData.put(createCubeVertexCol(getCubeColor(
                             Blocks[(int) x][(int) y][(int) z])));
@@ -183,20 +200,18 @@ public class Chunk {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
                     float rand = r.nextFloat();
-                    //boolean dog = true; this is for testing
-                    if (rand>0.8f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Grass);
-                    } else if (rand > 0.6f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Sand);
-                    } else if (rand > 0.4f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Dirt);
-                    } else if (rand > 0.3f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Water);
-                    } else if (rand > 0.1f) {
-                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Stone);
-                    } else {
+                    boolean dog = true; //this is for testing
+                    if (y == 0) {
                         Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Bedrock);
-                    }
+                    } else if (rand > 0.5f && (y == 1 || y == 2)) {
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Stone);
+                    } else if (rand <= 0.5f && (y == 1 || y == 2)) {
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Dirt);
+                    } else if (rand > 0.4f) {
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Grass);
+                    } else {
+                        Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Sand);
+                    } 
                 }
             }
         }
@@ -410,4 +425,6 @@ public class Chunk {
                     x + offset * 1, y + offset * 2};
         }
     }
+    
+
 }
